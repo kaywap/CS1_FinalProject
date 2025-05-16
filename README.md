@@ -5,6 +5,7 @@ A two-player Texas Hold'em poker game where two players compete to win chips by 
 - First of all, you need to know how to actually play Texas Hold'em poker. If you don't, search it up!
 
 ### Game Setup
+- Choose to run either main.py or multiplayer_main.py. (Multiplayer is where you can play with another person who has cloned you project)
 - Set initial balance for each player
 - Set small blind amount
 - Dealer rotates after each hand
