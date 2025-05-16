@@ -274,43 +274,45 @@ class Game:
         other_player = self.player2 if self.current_player == self.player1 else self.player1
         call_amount = other_player.current_bet - self.current_player.current_bet
 
-        # Check if player has enough money to call
-        if call_amount > self.current_player.balance:
-            # Handle all in situation
-            call_amount = self.current_player.balance
-            self.current_player.is_all_in = True
-            self.status_message = f"Player {1 if self.current_player == self.player1 else 2} is ALL IN!"
+        if call_amount > 0:
 
-        # Add the call amount to the pot
-        self.pot += call_amount
-        self.current_player.place_bet(other_player.current_bet)
+            # Check if player has enough money to call
+            if call_amount > self.current_player.balance:
+                # Handle all in situation
+                call_amount = self.current_player.balance
+                self.current_player.is_all_in = True
+                self.status_message = f"Player {1 if self.current_player == self.player1 else 2} is ALL IN!"
 
-        # Check if BOTH players are now all-in
-        if self.player1.is_all_in and self.player2.is_all_in:
-            # Deal all remaining community cards
-            while len(self.community_cards.hand.cards) < 5:
-                self.community_cards.hand.add_card(self.deck.deal())
+            # Add the call amount to the pot
+            self.pot += call_amount
+            self.current_player.place_bet(other_player.current_bet)
 
-            # Go directly to showdown
-            self.game_state = STATE_SHOWDOWN
-            self.handle_showdown()
-            return
+            # Check if BOTH players are now all-in
+            if self.player1.is_all_in and self.player2.is_all_in:
+                # Deal all remaining community cards
+                while len(self.community_cards.hand.cards) < 5:
+                    self.community_cards.hand.add_card(self.deck.deal())
 
-        # Special handling for preflop
-        if self.game_state == STATE_PREFLOP:
-            # If current player is the dealer (small blind), switch to big blind
-            if self.current_player == self.current_dealer:
-                self.current_player = self.current_bigblind
+                # Go directly to showdown
+                self.game_state = STATE_SHOWDOWN
+                self.handle_showdown()
                 return
 
-        # Check if both players have acted and bets are equal, or if someone is all-in
-        if (self.player1.current_bet == self.player2.current_bet) or \
-                self.player1.is_all_in or self.player2.is_all_in:
-            # Both players have acted and bets are equal, advance to next phase
-            self.advance_game_state()
-        else:
-            # Switch to the other player's turn
-            self.switch_turn()
+            # Special handling for preflop
+            if self.game_state == STATE_PREFLOP:
+                # If current player is the dealer (small blind), switch to big blind
+                if self.current_player == self.current_dealer:
+                    self.current_player = self.current_bigblind
+                    return
+
+            # Check if both players have acted and bets are equal, or if someone is all-in
+            if (self.player1.current_bet == self.player2.current_bet) or \
+                    self.player1.is_all_in or self.player2.is_all_in:
+                # Both players have acted and bets are equal, advance to next phase
+                self.advance_game_state()
+            else:
+                # Switch to the other player's turn
+                self.switch_turn()
 
     def handle_check(self):
         """Handle when a player checks"""
@@ -656,7 +658,7 @@ class Game:
 
                         # call button
                         elif self.call_button.is_hovered(mouse_pos):
-                            if self.player1.current_bet > 0 or self.player2.current_bet > 0:
+                            if self.player1.current_bet > 0 or self.player2.current_bet > 0 and self.player1.current_bet != self.player2.current_bet:
                                 self.handle_call()
 
                         # raise button
