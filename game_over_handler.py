@@ -27,7 +27,7 @@ class GameOverHandler:
         other_player.current_bet = 0
 
         # Return the winner and a message
-        return other_player, f"Player folds. {other_player.__class__.__name__} wins ${current_pot}"
+        return other_player, f"{str(folding_player)} folds. {str(other_player)} wins ${current_pot}"
 
     def handle_all_in(self, players, current_pot):
         """Handle all-in situations and create side pots as needed"""
@@ -76,9 +76,9 @@ class GameOverHandler:
         """Determine the winner based on hand strength"""
         # Check for folded players first
         if player1.is_folded:
-            return player2, f"{player2.__class__.__name__} wins (opponent folded)"
+            return player2, f"{str(player2)} wins (opponent folded)"
         elif player2.is_folded:
-            return player1, f"{player1.__class__.__name__} wins (opponent folded)"
+            return player1, f"{str(player1)} wins (opponent folded)"
 
         # Evaluate both hands
         hand1 = self.hand_evaluator.evaluate_hand(player1.hand.cards, community_cards.hand.cards)

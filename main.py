@@ -42,9 +42,9 @@ class Game:
         self.load_card_images()
 
         # making players
-        self.player1 = Player()
-        self.player2 = Player()
-        self.community_cards = Player()  # considered a "player" since it has a "hand"
+        self.player1 = Player(1)
+        self.player2 = Player(2)
+        self.community_cards = Player(3)  # considered a "player" since it has a "hand"
         self.community_cards.cards_visible = True  # community cards should always be face up
 
         # pot

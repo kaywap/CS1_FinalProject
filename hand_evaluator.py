@@ -245,24 +245,33 @@ class HandEvaluator:
         return False, []
 
     @staticmethod
-    def _is_one_pair(cards):
-        """Check for one pair"""
-        # Count occurrences of each value
+    def _is_one_pair(card_values):
+        """Detect one pair and return pair details with kickers"""
+        # Count occurrences of each card value
         value_counts = {}
-        #makes a dictionary, if the number isn't in value_counts, store it, and add 1 to how many of that number there are
-        for value, _ in cards:
-            if value not in value_counts:
-                value_counts[value] = 0
-            value_counts[value] += 1
+        for value in card_values:
+            value_counts[value] = value_counts.get(value, 0) + 1
 
-        # Check for pair
-        for value, count in value_counts.items():
-            if count == 2:
-                # Find the three highest kickers
-                kickers = sorted([v for v, _ in cards if v != value], reverse=True)
-                return True, [value, kickers[0], kickers[1], kickers[2]]
+        # Find pairs
+        pairs = [value for value, count in value_counts.items() if count == 2]
 
-        return False, []
+        if not pairs:
+            return False, []
+
+        # If a pair is found, get the pair value
+        pair_value = pairs[0]
+
+        # Get kickers (remaining unique values, sorted in descending order)
+        kickers = sorted(
+            [value for value in value_counts.keys() if value != pair_value],
+            reverse=True
+        )
+
+        # Ensure we have at least 3 kickers
+        while len(kickers) < 3:
+            kickers.append(0)  # Pad with zeros if not enough kickers
+
+        return True, [pair_value] + kickers[:3]
 
     @staticmethod
     def compare_hands(hand1, hand2):

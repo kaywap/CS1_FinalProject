@@ -8,7 +8,7 @@ from config import *
 from input_handler import InputHandler
 
 class Player:
-    def __init__(self):
+    def __init__(self, id):
         """Initialization"""
         self.hand = Hand()
         self.balance = 0
@@ -17,7 +17,7 @@ class Player:
         self.is_folded = False
         self.cards_visible = False  # Track if cards are currently visible
         self.is_all_in = False  # Track if player is all-in
-
+        self.id = id
     def set_balance(self, screen, player):
         """sets the balance of the player"""
         self.balance = InputHandler.get_numeric_input(
@@ -93,3 +93,6 @@ class Player:
         self.cards_visible = False
         self.is_all_in = False
         # Note: balance is not reset between hands
+
+    def __str__(self):
+        return 'Player '+str(self.id)
