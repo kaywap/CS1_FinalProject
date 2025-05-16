@@ -1,8 +1,14 @@
+"""input_handler.py - makes taking input and blitting to screen easier"""
+__version__ = '05/22/2025'
+__author__ = 'Kayla Cao'
+
 import pygame
 from config import *
 
 class InputHandler:
+    @staticmethod #no self variables
     def get_numeric_input(screen, message, x, y, min_value=0, max_value=None):
+        """gets a numeric input from the user"""
         input_text = ''
         clock = pygame.time.Clock()
 
