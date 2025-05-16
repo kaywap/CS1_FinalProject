@@ -1,3 +1,5 @@
+from network_manager import NetworkManager
+
 class PokerNetworkManager(NetworkManager):
     def __init__(self, game, is_server=False, server_ip='127.0.0.1', port=5555):
         super().__init__(is_server, server_ip, port)
